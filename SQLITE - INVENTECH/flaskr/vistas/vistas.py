@@ -16,3 +16,18 @@ class VistaProveedor(Resource):
         db.session.add(nuevo_proveedor)
         db.session.commit()
         return proveedor_schema.dump(nuevo_proveedor), 201
+
+    def put(self, id):
+        proveedor = Proveedor.query.get_or_404(id)
+        proveedor.nombre = request.json.get('nombre', proveedor.nombre)
+        proveedor.email = request.json.get('email', proveedor.email)
+        proveedor.direccion = request.json.get('direccion', proveedor.direccion)
+        proveedor.telefono = request.json.get('telefono', proveedor.telefono)
+        db.session.comit()
+        return proveedor_schema.dump(proveedor)
+
+    def delete(self, id):
+        proveedor = Proveedor.query.get_or_404(id)
+        db.session.delete(proveedor)
+        db.session.commit()
+        return '', 204
